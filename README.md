@@ -4,7 +4,7 @@ Esperimenti sul codice di [DeepOHeat-v1](https://github.com/xlyu0127/DeepOHeat-v
 [arXiv 2504.03955](https://arxiv.org/abs/2504.03955)): riproduzione del caso "surface power", studio del training set,
 ed estensione a un chip a **due materiali** (conducibilità a gradino) confrontata con soluzioni Ansys.
 
-Diario completo con figure: [`report_esperimenti.pdf`](report_esperimenti.pdf) (parte 1, surface).
+Diari completi con figure: [`report_esperimenti.pdf`](report_esperimenti.pdf) (parte 1, caso surface del paper) e [`report_due_materiali.pdf`](report_due_materiali.pdf) (parte 2, chip a due materiali).
 Contesto tecnico e tabella di tutti i run: [`CLAUDE.md`](CLAUDE.md).
 
 ## Contenuto
