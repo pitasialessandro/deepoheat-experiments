@@ -1,0 +1,11 @@
+jax
+equinox
+optax
+numpy
+scipy
+GPUtil
+setuptools  # fornisce distutils, richiesto da GPUtil su Python >= 3.12
+pyamg
+jupyter
+# cupy: solo CUDA/Linux, non installabile su macOS (usato in hybrid_solver.ipynb)
+matplotlib

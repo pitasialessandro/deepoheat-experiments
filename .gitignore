@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.DS_Store
+# dati grandi del paper (Google Drive, vedi data/README.md) e dataset generati
+data/fs_train_surface*.npy
+data/u_test_surface.npy
+data/*volume*.npy
+data/*_preview.png
+# predizioni: rigenerabili dai pesi
+results/**/u_pred*.npy

@@ -1,0 +1,11 @@
+case 0: rel_l2 2.9064%  peak_err +0.416 C  max_abs_err 1.593 C
+case 1: rel_l2 2.2203%  peak_err -0.772 C  max_abs_err 2.416 C
+case 2: rel_l2 7.0264%  peak_err +0.024 C  max_abs_err 0.996 C
+case 3: rel_l2 0.7243%  peak_err +0.057 C  max_abs_err 0.584 C
+case 4: rel_l2 6.2496%  peak_err +0.298 C  max_abs_err 0.980 C
+case 5: rel_l2 6.3095%  peak_err +0.278 C  max_abs_err 1.455 C
+case 6: rel_l2 2.4842%  peak_err -0.727 C  max_abs_err 1.745 C
+case 7: rel_l2 3.0229%  peak_err +0.234 C  max_abs_err 1.379 C
+case 8: rel_l2 1.3232%  peak_err +0.729 C  max_abs_err 1.480 C
+case 9: rel_l2 2.3281%  peak_err -2.110 C  max_abs_err 2.678 C
+mean rel_l2 3.4595%  mean |peak_err| 0.565 C

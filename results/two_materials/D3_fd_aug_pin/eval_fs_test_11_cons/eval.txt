@@ -1,0 +1,3 @@
+boundary-layer check |uzz| top(0.45-0.5)/interno: 3.7  (>10 = il modello bara tra i punti di collocazione)
+case 0: rel_l2 2.3486%  peak_err -0.334 C  max_abs_err 0.397 C
+mean rel_l2 2.3486%  mean |peak_err| 0.334 C

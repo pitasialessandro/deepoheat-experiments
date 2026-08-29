@@ -1,0 +1,2 @@
+case 0: rel_l2 29.7505%  peak_err -1.998 C  max_abs_err 2.835 C
+mean rel_l2 29.7505%  mean |peak_err| 1.998 C
