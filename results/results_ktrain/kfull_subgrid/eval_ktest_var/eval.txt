@@ -1,0 +1,14 @@
+boundary-layer check |uzz| top(0.45-0.5)/interno: 3.3  (>10 = il modello bara tra i punti)
+case 0 (k1=1.40 k2=0.50 yi=0.48): rel_l2 1.8717%  peak_err -0.613 C  max_abs_err 1.108 C
+case 1 (k1=1.40 k2=0.50 yi=0.48): rel_l2 2.4270%  peak_err -1.122 C  max_abs_err 1.556 C
+case 2 (k1=1.40 k2=0.50 yi=0.30): rel_l2 1.3893%  peak_err -0.170 C  max_abs_err 0.814 C
+case 3 (k1=1.40 k2=0.50 yi=0.30): rel_l2 1.8700%  peak_err -0.337 C  max_abs_err 1.045 C
+case 4 (k1=0.50 k2=1.40 yi=0.60): rel_l2 1.5388%  peak_err -0.300 C  max_abs_err 0.787 C
+case 5 (k1=0.50 k2=1.40 yi=0.60): rel_l2 1.9747%  peak_err -0.734 C  max_abs_err 1.060 C
+case 6 (k1=2.00 k2=0.80 yi=0.35): rel_l2 0.9749%  peak_err -0.012 C  max_abs_err 0.451 C
+case 7 (k1=2.00 k2=0.80 yi=0.35): rel_l2 1.4287%  peak_err -0.158 C  max_abs_err 0.677 C
+case 8 (k1=0.70 k2=0.35 yi=0.72): rel_l2 2.6107%  peak_err -1.595 C  max_abs_err 1.819 C
+case 9 (k1=0.70 k2=0.35 yi=0.72): rel_l2 2.0714%  peak_err -1.550 C  max_abs_err 1.676 C
+case 10 (k1=1.00 k2=1.00 yi=0.50): rel_l2 1.1600%  peak_err -0.018 C  max_abs_err 0.467 C
+case 11 (k1=1.00 k2=1.00 yi=0.50): rel_l2 0.9370%  peak_err -0.031 C  max_abs_err 0.350 C
+mean rel_l2 1.6879%  mean |peak_err| 0.553 C  mean max_err 0.984 C

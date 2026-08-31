@@ -8,3 +8,5 @@ data/*volume*.npy
 data/*_preview.png
 # predizioni: rigenerabili dai pesi
 results/**/u_pred*.npy
+# test set k-variabile: rigenerabili con new_experiment/make_k_testsets.py
+data/ktest_*.npz

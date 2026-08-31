@@ -104,3 +104,46 @@ forma 0.3-0.7% su tutti i casi come il primo run FD; il livello residuo con pin_
 cioe' dipende solo da quanto la mappa 21x21 sottostima il flusso Ansys (celle di bordo a mezza area pesate come intere: -8%).
 Mappe con flusso totale esatto: `data/fs_test_{11,14}_flux.npy` (media 21 punti = <k*uz> vero). D2 (griglia 51) interrotto: non necessario.
 Regola pratica: per un nuovo caso Ansys, ricavare f da k*uz del top e scalare la mappa 21x21 al flusso totale vero; usare pin_level.
+
+## Esperimento k trainable: k come input della rete (`new_experiment/`, 31/08/2026)
+Problema (PDF `k_trainable.pdf`, F. Spinelli): stesso chip a due materiali, ma il campo k non e' piu' noto al modello
+a priori: entra come input tramite un secondo branch (prodotto di Hadamard con il branch della potenza, Fig. 1 del PDF).
+File nuovi: `new_experiment/models_k.py` (DeepOHeat_k: branch k su profilo k(y) a 21 punti pesato per frazione di volume,
+input in log; trunk y con dizionario di kink opzionale), `new_experiment/heat_surface4.py` (loss FD con k per campione,
+(k1,k2,yi) campionati a ogni batch: `--k_mode fixed|yi|full`, k in [0.3,2] loguniforme, yi in [0.2,0.8]),
+`new_experiment/fd_solver.py` (solutore diretto AMG+CG, ~2 s per caso 101x101x51; validato vs Ansys: 0.24%/0.94% con f esatta),
+`new_experiment/make_k_testsets.py` (test .npz: f,u,k1,k2,yi; `ktest_ansys11/14.npz` + `ktest_var.npz`, 12 casi con 6 k mai visti).
+
+Risultati (31/08), train `fs_train_surface_mixed_p4.npy`, FD 41x41x21, pin_level, amp aug, cartelle `results/results_ktrain/`:
+| run | Ansys 11 | Ansys 14 | ktest_var (12 k mai visti) |
+|---|---|---|---|
+| `kfixed_sanity` (k fisso, 30k) | 0.65% | 1.36% | 2.55% (k fuori distr.) |
+| `kyi_30k` (solo yi variabile) | 1.06% | 5.39% | 2.26% |
+| `kfull_50k` | 1.20% | 5.55% | 1.69% |
+| `kfull_nokink` (30k, senza dizionario) | 1.24% | 5.61% | 1.64% |
+| **`kfull_60k_d1200`** (decay 1200, kbranch 128) | **1.15%** | **5.20%** | **1.56%** (max err medio 0.87 °C) |
+
+Cose capite:
+- Sanity ok: il secondo branch non costa nulla a parita' di problema (0.65/1.36 vs 0.72/1.33 del preliminare).
+- Il DIZIONARIO di kink [y,|y-c_m|] e' INUTILE con la loss FD (nokink identico): il trunk liscio basta; era la PINN
+  a rendere indispensabile la feature |y-yi|. Ipotesi architetturale smentita dai dati.
+- Tassa di condizionamento: lo stesso k, servito dal modello k-variabile, costa ~2x di rel L2 (0.9->2.0% sui casi FD).
+  Sul caso Ansys 14 (quadrante, mappa piu' fuori distribuzione) costa 4x: errore = TILT lungo y (+-0.7 °C ai lati
+  dell'interfaccia, ripartizione del salto termico leggermente sbagliata), NON offset (pin_level resta esatto per ogni k).
+- decay_steps 600 spegne il training a ~30k epoche (lr 5e-6): per run >30k usare decay ~1200. Guadagno pero' modesto.
+- Se a inferenza k e' noto, un fine-tune breve a k fisso recupera la precisione del modello dedicato (~0.7-1.4%).
+Comando del run migliore: `python new_experiment/heat_surface4.py --k_mode full --epochs 60000 --decay_steps 1200 --kbranch_hidden 128 --tag _60k_d1200`
+
+Serie accorgimenti (31/08 pomeriggio), tutti k_mode full senza dizionario, loss con interfaccia sub-griglia
+(facce y = armonica pesata theta, nodi = media di volume; stessa cosa in fd_solver.solve_k_step):
+| run | Ansys 11 | Ansys 14 | ktest_var |
+|---|---|---|---|
+| `kfull_subgrid` (30k) | 1.26% | 5.55% | 1.69% |
+| `kfull_subgrid_s1` (seed 1) | 1.31% | 5.64% | 1.71% |
+| `kfixed_ft_from_subgrid` (fine-tune k fisso, 10k ep, lr 3e-4, 107 s) | **0.60%** | **1.35%** | — |
+- Interfaccia sub-griglia: NON era la causa del tilt del caso 14 (numeri identici alla loss quantizzata).
+  Tenuta comunque nel codice: fisica piu' corretta, costo zero.
+- Rumore da seed: ~0.05-0.1% di rel L2 -> il guadagno del run 60k/decay1200 (1.56% vs 1.69%) e' reale ma marginale.
+- FINE-TUNE a k fisso dal modello generale (`--init_from`): recupera TUTTA la tassa di condizionamento in ~2 min
+  (0.60/1.35 vs 0.65/1.36 del modello dedicato). Ricetta consigliata: modello generale per esplorare k,
+  fine-tune quando k e' fissato. Inseguire oltre il tilt del caso 14 (capacita', famiglia f) ha ROI basso.
